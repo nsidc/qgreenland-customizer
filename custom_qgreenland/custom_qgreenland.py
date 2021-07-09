@@ -203,6 +203,14 @@ class QGreenlandCustomizer:
             layer_tree_item.setText(0, layer_info['title'])
             tree_items.append(layer_tree_item)
 
+            for category_path_list in layer_info['categories']:
+                for category_path_group in category_path_list:
+                    subgroup_tree_item = QTreeWidgetItem(layer_tree_item)
+                    subgroup_tree_item.setText(0, category_path_group)
+                    tree_items.append(subgroup_tree_item)
+
+
+
         self.dlg.treeWidget.insertTopLevelItems(0, tree_items)
         
 
