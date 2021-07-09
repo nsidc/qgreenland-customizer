@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>240</y>
+     <x>40</x>
+     <y>250</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -42,15 +42,20 @@
     <string>Layers list</string>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QTreeWidget" name="treeWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>371</width>
-     <height>192</height>
+     <width>381</width>
+     <height>221</height>
     </rect>
    </property>
+   <column>
+    <property name="text">
+     <string notr="true">1</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>

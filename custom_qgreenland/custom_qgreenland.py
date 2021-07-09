@@ -26,7 +26,7 @@ from pathlib import Path
 
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QTreeWidgetItem
 
 # Initialize Qt resources from file resources.py
 from .resources import *
@@ -194,11 +194,17 @@ class QGreenlandCustomizer:
 
 
         manifest_path = Path(__file__).parent / 'manifest.json'
-        data = json.load(open(manifest_path, 'r'))
-        layers_list = [item['title'] for item in data.values()]
+        layer_manifest_data = json.load(open(manifest_path, 'r'))
 
-        self.dlg.listWidget.clear()
-        self.dlg.listWidget.addItems(layers_list)
+        self.dlg.treeWidget.clear()
+        tree_items = []
+        for layer_info in layer_manifest_data.values():
+            layer_tree_item = QTreeWidgetItem(self.dlg.treeWidget)
+            layer_tree_item.setText(0, layer_info['title'])
+            tree_items.append(layer_tree_item)
+
+        self.dlg.treeWidget.insertTopLevelItems(0, tree_items)
+        
 
         # show the dialog
         self.dlg.show()
