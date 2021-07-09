@@ -23,6 +23,7 @@
 """
 import json
 from pathlib import Path
+from collections import defaultdict
 
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
@@ -33,6 +34,16 @@ from .resources import *
 # Import the code for the dialog
 from .custom_qgreenland_dialog import QGreenlandCustomizerDialog
 import os.path
+
+
+def manifest_by_categories(manifest_dict):
+    category_thing = defaultdict(list)
+
+    for layer_info in manifest_dict.values():
+        for category_path_list in layer_info['categories']:
+            category_thing[tuple(category_path_list)].append(layer_info['title'])
+
+    return category_thing
 
 
 class QGreenlandCustomizer:
@@ -195,22 +206,32 @@ class QGreenlandCustomizer:
 
         manifest_path = Path(__file__).parent / 'manifest.json'
         layer_manifest_data = json.load(open(manifest_path, 'r'))
+        categorized = manifest_by_categories(layer_manifest_data)
+
+        top_level_tree_items = dict()
+        for category_tuple in categorized.keys():
+            subgroup_path = []
+            for subgroup in category_tuple:
+                subgroup_path.append(subgroup)
+                if tuple(subgroup_path) in top_level_tree_items:
+                    tree_item = top_level_tree_items[tuple(subgroup_path)]
+                elif len(subgroup_path) == 1:
+                    tree_item = QTreeWidgetItem(self.dlg.treeWidget)
+                    top_level_tree_items[tuple(subgroup_path)] = tree_item
+                else:
+                    tree_item = QTreeWidgetItem(top_level_tree_items[tuple(subgroup_path[:-1])])
+                    top_level_tree_items[tuple(subgroup_path)] = tree_item
+            
+        tree_items = []
+        for category_tuple, layer_titles in categorized.items():
+            top_level_tree = top_level_tree_items[category_tuple]
+            tree_items.append(top_level_tree)
+            for layer_title in layer_titles:
+                layer_tree_item = QTreeWidgetItem(top_level_tree)
+                layer_tree_item.setText(0, layer_title)
+                tree_items.append(layer_tree_item)
 
         self.dlg.treeWidget.clear()
-        tree_items = []
-        for layer_info in layer_manifest_data.values():
-            layer_tree_item = QTreeWidgetItem(self.dlg.treeWidget)
-            layer_tree_item.setText(0, layer_info['title'])
-            tree_items.append(layer_tree_item)
-
-            for category_path_list in layer_info['categories']:
-                for category_path_group in category_path_list:
-                    subgroup_tree_item = QTreeWidgetItem(layer_tree_item)
-                    subgroup_tree_item.setText(0, category_path_group)
-                    tree_items.append(subgroup_tree_item)
-
-
-
         self.dlg.treeWidget.insertTopLevelItems(0, tree_items)
         
 
