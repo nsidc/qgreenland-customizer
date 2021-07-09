@@ -1,0 +1,30 @@
+{
+  "arctic_circle": {
+    "title": "Arctic Circle",
+    "categories": ["Reference/QGreenland Boundaries"]
+  },
+  "timezones": {
+    "title": "Time Zones",
+    "categories": ["Reference/QGreenland Boundaries"]
+  },
+  "populated_places": {
+    "title": "Towns and Settlements",
+    "categories": ["Places"]
+  },
+  "seismograph_stations": {
+    "title": "Seismograph stations",
+    "categories": ["Places", "Disciplines/Human Activity/ResearchStations"]
+  },
+  "public_licenses": {
+    "title": "Public Licenses",
+    "categories": ["Disciplines/Environmental Management/Mineral and Hydrocarbon Licenses"]
+  },
+  "racmo_precip": {
+    "title": "Total precipitation 1958-2019 (1km)",
+    "categories": ["Disciplines/Regional Climate Models/RACMO"]
+  },
+  "firn_ice_layer_thicknesses": {
+    "title": "Ice slab thickness in firn ice 2010-2014",
+    "categories": ["Disciplines/Glaciology", "Variables/Thickness"]
+  }
+}
